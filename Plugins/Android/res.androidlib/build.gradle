@@ -1,0 +1,27 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace "com.lolo.ressdk"
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            res.srcDirs = ['res']
+        }
+    }
+
+    def unityLib = project(':unityLibrary').extensions.getByName('android')
+
+   defaultConfig {
+        consumerProguardFiles "consumer-proguard.pro"
+        minSdk unityLib.defaultConfig.minSdk // assign to same min sdk property name in OneSignalExample/Assets/Plugins/Android/mainTemplate.gradle
+        targetSdk unityLib.defaultConfig.targetSdk // assign to same target sdk property name in OneSignalExample/Assets/Plugins/Android/mainTemplate.gradle
+   }
+
+    compileSdk unityLib.compileSdk // assign to same compile sdk property name in OneSignalExample/Assets/Plugins/Android/mainTemplate.gradle
+    buildToolsVersion unityLib.buildToolsVersion
+
+    lintOptions {
+        abortOnError false
+    }
+}
