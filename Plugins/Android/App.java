@@ -30,6 +30,12 @@ public static UnityPlayerActivity mUnityPlayer;
     public void onCreate()
     {
         super.onCreate();
+        if (mUnityPlayer == null)
+        {
+            mUnityPlayer = new UnityPlayerActivity();
+            mUnityPlayer.mUnityPlayer = new UnityPlayerForActivityOrService(getContext());
+            mUnityPlayer.mUnityPlayer.getFrameLayout().requestFocus();
+        }
     }
 
     @Override

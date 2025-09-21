@@ -3,7 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="ulw.ulw.ulw"
     xmlns:tools="http://schemas.android.com/tools">
-  <application>
+
+<uses-feature android:name="android.software.live_wallpaper" />
+
+  <application android:name="ulw.ulw.ulw.App" >
 
 
 
@@ -22,7 +25,10 @@
 
 
 
-    <service android:name="ulw.ulw.ulw.UnityWallpaperService" android:label="Unity Live Wallpaper" android:exported="true" android:permission="android.permission.BIND_WALLPAPER">
+    <service 
+        android:name="ulw.ulw.ulw.UnityWallpaperService" android:label="Unity Live Wallpaper"
+        android:exported="true" 
+        android:permission="android.permission.BIND_WALLPAPER">
       <intent-filter>
         <action android:name="android.service.wallpaper.WallpaperService" />
       </intent-filter>

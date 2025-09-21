@@ -21,7 +21,7 @@ import com.unity3d.player.PermissionRequest;
 import com.unity3d.player.UnityPlayerForActivityOrService;
 
 
-public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecycleEvents, IUnityPermissionRequestSupport, IUnityPlayerSupport
+public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecycleEvents, IUnityPermissionRequestSupport, IUnityPlayerSupport, SurfaceHolder.Callback
 {
     public static UnityPlayerForActivityOrService mUnityPlayer; // don't change the name of this variable; referenced from native code
 
@@ -38,18 +38,59 @@ public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecyc
     }
 
 
+		@Override
+		public void surfaceCreated(SurfaceHolder holder) {
+			//super.surfaceCreated(holder);
+		}
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        App.mUnityPlayer.mUnityPlayer.displayChanged(0, holder.getSurface());
+        App.mUnityPlayer.mUnityPlayer.resume();
+    }
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        
+        if (!WallpaperUtility.isULWActive(this.getApplicationContext()))
+        {
+            App.mUnityPlayer.mUnityPlayer.pause();
+            App.mUnityPlayer.mUnityPlayer.displayChanged(0, null);
+        }
+    }
+
+
+
     // Setup activity layout
     @Override protected void onCreate(Bundle savedInstanceState)
     {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-
+/*
         String cmdLine = updateUnityCommandLineArguments(getIntent().getStringExtra("unity"));
         getIntent().putExtra("unity", cmdLine);
 
         mUnityPlayer = new UnityPlayerForActivityOrService(this, this);
 App.mUnityPlayer = this;
         setContentView(mUnityPlayer.getFrameLayout());
+        mUnityPlayer.getFrameLayout().requestFocus();
+*/
+testInit();
+    }
+public Context getContext() {
+        return this;
+}
+static SurfaceView view;
+    public void testInit()
+    {
+        //String cmdLine = updateUnityCommandLineArguments(getIntent().getStringExtra("unity"));
+        //getIntent().putExtra("unity", cmdLine);
+
+        mUnityPlayer = new UnityPlayerForActivityOrService(getContext());
+App.mUnityPlayer = this;
+view = new SurfaceView(this);
+view.getHolder().addCallback(this);
+setContentView(view);
+        //setContentView(mUnityPlayer.getFrameLayout());
         mUnityPlayer.getFrameLayout().requestFocus();
     }
 
@@ -65,6 +106,11 @@ App.mUnityPlayer = this;
 
     // Callback before Unity player process is killed
     @Override public void onUnityPlayerQuitted() {
+        if (!WallpaperUtility.isULWActive(App.mUnityPlayer.getApplicationContext()))
+        {
+            App.mUnityPlayer.onPause();
+            App.mUnityPlayer.mUnityPlayer.displayChanged(0, null);
+        }
     }
 
     @Override protected void onNewIntent(Intent intent)
@@ -111,7 +157,15 @@ App.mUnityPlayer = this;
     @Override public void onResume()
     {
         super.onResume();
-        mUnityPlayer.onResume();
+        mUnityPlayer.resume();
+        view.getHolder().addCallback((SurfaceHolder.Callback) this);
+
+        if(view.getHolder().getSurface().isValid())
+        {
+            App.mUnityPlayer.mUnityPlayer.pause();
+            App.mUnityPlayer.mUnityPlayer.displayChanged(0, view.getHolder().getSurface());
+            App.mUnityPlayer.mUnityPlayer.resume();
+        }
     }
 
     // Low Memory Unity
@@ -150,6 +204,7 @@ App.mUnityPlayer = this;
     @Override public void onWindowFocusChanged(boolean hasFocus)
     {
         super.onWindowFocusChanged(hasFocus);
+        App.ACT = hasFocus;
         mUnityPlayer.windowFocusChanged(hasFocus);
     }
 

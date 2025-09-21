@@ -25,10 +25,11 @@ public class UnityWallpaperService extends WallpaperService
             //String cmdLine = App.mUnityPlayer.updateUnityCommandLineArguments(App.mUnityPlayer.getIntent().getStringExtra("unity"));
             //App.mUnityPlayer.getIntent().putExtra("unity", cmdLine);
 
-            //App.mUnityPlayer.mUnityPlayer = new UnityPlayerForActivityOrService(App.mUnityPlayer, App.mUnityPlayer);
+            //App.mUnityPlayer.mUnityPlayer = new UnityPlayerForActivityOrService(getApplicationContext(), App.mUnityPlayer);
             //App.mUnityPlayer.setContentView(App.mUnityPlayer.mUnityPlayer.getFrameLayout());
             //App.mUnityPlayer.mUnityPlayer.getFrameLayout().requestFocus();
-
+//App.mUnityPlayer.testInit();
+//App.mUnityPlayer.onCreate(null);
 //Intent intent = new Intent(getApplicationContext(),UnityPlayerActivity.class);
 //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
 //intent.addFlags(Intent.FLAG_FROM_BACKGROUND); 
@@ -63,7 +64,6 @@ public class UnityWallpaperService extends WallpaperService
 
     private class UnityWallpaperEngine extends Engine
     {
-
         public void onTouchEvent(MotionEvent motionEvent) {
             App.mUnityPlayer.mUnityPlayer.injectEvent(motionEvent);
         }
@@ -75,9 +75,9 @@ public class UnityWallpaperService extends WallpaperService
             if(isPreview() && WallpaperUtility.isULWActive(getApplicationContext())) App.PS = z;
 
             if (z) {
-                    App.mUnityPlayer.onPause();
+                    App.mUnityPlayer.mUnityPlayer.pause();
                     App.mUnityPlayer.mUnityPlayer.displayChanged(0, getSurfaceHolder().getSurface());
-                    App.mUnityPlayer.onResume();
+                    App.mUnityPlayer.mUnityPlayer.resume();
             }
             else
             {
