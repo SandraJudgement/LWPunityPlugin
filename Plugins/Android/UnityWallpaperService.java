@@ -9,6 +9,7 @@ import android.view.Window;
 import ulw.ulw.ulw.App;
 import ulw.ulw.ulw.UnityPlayerActivity;
 import com.unity3d.player.UnityPlayerForActivityOrService;
+import android.util.Log;
 
 import android.app.WallpaperManager;
 import android.content.ComponentName;
@@ -19,22 +20,10 @@ public class UnityWallpaperService extends WallpaperService
 
         if (App.mUnityPlayer == null)
         {
-            //App.mUnityPlayer = new UnityPlayerActivity();
-            //App.mUnityPlayer.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-            //String cmdLine = App.mUnityPlayer.updateUnityCommandLineArguments(App.mUnityPlayer.getIntent().getStringExtra("unity"));
-            //App.mUnityPlayer.getIntent().putExtra("unity", cmdLine);
-
-            //App.mUnityPlayer.mUnityPlayer = new UnityPlayerForActivityOrService(getApplicationContext(), App.mUnityPlayer);
-            //App.mUnityPlayer.setContentView(App.mUnityPlayer.mUnityPlayer.getFrameLayout());
-            //App.mUnityPlayer.mUnityPlayer.getFrameLayout().requestFocus();
-//App.mUnityPlayer.testInit();
-//App.mUnityPlayer.onCreate(null);
-//Intent intent = new Intent(getApplicationContext(),UnityPlayerActivity.class);
-//intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-//intent.addFlags(Intent.FLAG_FROM_BACKGROUND); 
-//getApplicationContext().startActivity(intent);
+            
         }
+//Log.d("test!!", "Start of UnityWallpaperService !!!!!!");
+exportText.saveFile("lwp_unityBootMode","0");
 
     }
 
@@ -45,6 +34,7 @@ public class UnityWallpaperService extends WallpaperService
 
     public void onDestroy() {
         super.onDestroy();
+        App.mUnityPlayer.onDestroy();
     }
 
     public void onLowMemory() {

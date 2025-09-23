@@ -8,11 +8,14 @@ import com.unity3d.player.UnityPlayer;
 import ulw.ulw.ulw.UnityPlayerActivity;
 import com.unity3d.player.UnityPlayerForActivityOrService;
 
+
 public class App extends Application
 {
 public static UnityPlayerActivity mUnityPlayer;
     public static boolean PS;
     public static boolean ACT = false;
+    public static String appPackageName;
+    //public static String internalStoragePath;
 
     private static App instance;
 
@@ -30,6 +33,8 @@ public static UnityPlayerActivity mUnityPlayer;
     public void onCreate()
     {
         super.onCreate();
+        appPackageName = getContext().getPackageName();
+        //internalStoragePath = getContext().getFilesDir().getPath();
         if (mUnityPlayer == null)
         {
             mUnityPlayer = new UnityPlayerActivity();
