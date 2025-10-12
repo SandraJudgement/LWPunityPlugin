@@ -2,6 +2,7 @@ package ulw.ulw.ulw;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 import android.content.Context;
 
@@ -18,10 +19,12 @@ public class exportText
 
         // try-with-resources
         try (FileWriter writer = new FileWriter(path)) {
+//File file = new File("/data/data/" + App.appPackageName + "/files/",filename);
+//file.mkdirs();
             writer.write(str);
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+        //    throw new RuntimeException(e);
         }
     }
     // ファイルを読み出し
